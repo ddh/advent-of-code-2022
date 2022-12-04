@@ -16,10 +16,9 @@ def split_line_in_half(line)
 end
 
 # Split the rucksack into its first/last half strings
-# Throw each letter in the first half into a dictionary (one pass)
-# Iterate through second half and check if letter has already
-# been encountered by using the dictionary (< one pass).
-# Immediately break out if found; that is the common letter.
+# Perform set#intersection to find common letter(s)
+# Return the first one, since guaraunteed by problem
+# there is only one.
 def read(file)
   priority_sum = 0
 
