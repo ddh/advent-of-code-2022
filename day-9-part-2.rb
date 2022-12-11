@@ -4,7 +4,7 @@
 # of tails.
 
 # My idea here is to expand on my Part 1 solution
-# by making a 'Node' class. We're basically going
+# by making a 'Knot' class. We're basically going
 # to use linked lists here to OOP us to the answer.
 
 # Represents a point in cartesian coordinate plane
@@ -29,13 +29,13 @@ end
 
 # Our linked list. We can add knots to it.
 # We tell our 'rope' to move, and it'll
-# move the 'head' node, which in turn tells
+# move the 'head' knot, which in turn tells
 # its child to move, etc etc down to the tail.
 class Rope
   attr_accessor :head, :tail
 
   def initialize
-    @head = Node.new(0,0)
+    @head = Knot.new(0,0)
     @tail = @head
   end
 
@@ -44,16 +44,16 @@ class Rope
   end
 
   def add
-    node = Node.new(@tail.x, @tail.y)
-    @tail.add(node)
-    @tail = node
+    knot = Knot.new(@tail.x, @tail.y)
+    @tail.add(knot)
+    @tail = knot
   end
 end
 
-class Node
+class Knot
   require 'Set'
   attr_reader :x, :y
-  attr_accessor :depth, :child, :parent
+  attr_accessor :child, :parent
 
   DIRECTION = {
     'R' => [1,0],
@@ -65,13 +65,11 @@ class Node
   def initialize(x, y)
     @x = x
     @y = y
-    @depth = 0
     @visited = Set.new.add(Point.new(x, y))
   end
 
-  def add(node)
-    @child = node
-    @child.depth = depth + 1
+  def add(knot)
+    @child = knot
     @child.parent = self
   end
 
@@ -83,14 +81,15 @@ class Node
   # As long as x,y are within +/-1 of the other x,y, then it is touching
   def touching?
     raise "This is the head" unless @parent
+
     ((@parent.x - 1)..(@parent.x + 1)) === x && ((@parent.y - 1)..(@parent.y + 1)) === y
   end
 
   # I could probably clean this up but it works.
-  # If the node has no parent, ie it is the head,
+  # If the knot has no parent, ie it is the head,
   # it can move freely without restriction.
-  # Otherwise, the node can only move if it is
-  # not touching its parent node.
+  # Otherwise, the knot can only move if it is
+  # not touching its parent knot.
   def move(direction)
 
     # If no parent, then it can move
@@ -138,8 +137,8 @@ end
 # # file = 'day-9-sample-input.txt'
 file = 'day-9-input.txt'
 
-# Create a 'rope' and add enough 'knots' (nodes)
-# until we have 10 nodes total, as per problem
+# Create a 'rope' and add enough 'knots' (knots)
+# until we have 10 knots total, as per problem
 rope = Rope.new
 9.times { rope.add }
 
