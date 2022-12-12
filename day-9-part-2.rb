@@ -107,7 +107,7 @@ class Knot
         @y += @parent.y < @y ? -1 : 1
         @x += @parent.x < @x ? -1 : 1
       else
-        # Otherwise, child moves along the y-axis to catch up
+        # Otherwise, child moves along the x-axis to catch up
         if @parent.y == @y
           @x += @parent.x < @x ? -1 : 1
         end
